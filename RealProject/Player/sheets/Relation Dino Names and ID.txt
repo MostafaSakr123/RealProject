@@ -1,0 +1,5 @@
+Code:	Name:
+0	Doux
+1	Mort
+2	Tard
+3	Vita
