@@ -42,7 +42,10 @@ public:
 	
 	void drawSprite(RenderTarget& target);
 	void setSpritePosition(float x, float y);
+	void moveSprite(float x ,float y);
 	void InitSprite();
+	Vector2f getDinoPos();
+	void makeDuckingAnimation();
 
 
 

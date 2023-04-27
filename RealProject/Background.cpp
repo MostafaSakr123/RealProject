@@ -42,7 +42,7 @@ void Background::InitMusic()
     {
         music.play();
         music.setLoop(true);
-        music.setVolume(10.f);
+        music.setVolume(50.f);
 
 
     }
@@ -110,6 +110,29 @@ void Background::renderDinos( RenderTarget& target)
     FigureDino4.setColor("Blue");
     FigureDino4.setSpritePosition(750.f, 350.f);
     FigureDino4.drawSprite(target);
+}
+
+void Background::muteMusic()
+{
+    music.pause();
+    if (!(this->music2.openFromFile("Music/main_theme.ogg")))
+    {
+        cout << "Failed to load music" << "\n";
+    }
+    else
+    {
+        music2.play();
+        music2.setLoop(true);
+        music2.setVolume(50.f);
+    }
+}
+
+void Background::muteMusic2()
+{
+    if (music2.getStatus())
+        music2.stop();
+    else
+        music2.play();
 }
 
 

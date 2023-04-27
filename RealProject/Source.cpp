@@ -24,5 +24,5 @@ int main()
 
     // end of application
 
-    return 0;
+
 }
