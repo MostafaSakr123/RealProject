@@ -54,6 +54,24 @@ void Dino::InitSprite()
 	
 }
 
+Vector2f Dino::getDinoPos()
+{
+	return sprite.getPosition() ;
+}
+
+void Dino::makeDuckingAnimation()
+{
+	sprite.setTextureRect(IntRect(24 * frame, 24*17, 24, 24));
+	sprite.setScale(5.f, 5.f);
+	if (frameCounter == 5)
+	{
+		frame = (frame + 1) % 20;
+		frameCounter = 0;
+	}
+	frameCounter++;
+
+}
+
 
 
 // Constructor and Destructor
@@ -88,4 +106,10 @@ void Dino::drawSprite(RenderTarget& target)
 void Dino::setSpritePosition(float x, float y)
 {
 	sprite.setPosition(x, y);
+
+}
+
+void Dino::moveSprite(float x, float y)
+{
+	sprite.move(x, y);
 }

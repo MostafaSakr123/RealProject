@@ -23,6 +23,7 @@ private:
 	//Music and Sounds
 
 	Music music;
+	Music music2;
 	
 
 	RectangleShape box1, box2, box3;
@@ -42,5 +43,7 @@ public:
 	void renderText(RenderTarget& target);
 	void renderBoxes(RenderTarget& target);
 	void renderDinos( RenderTarget& target);
+	void muteMusic();
+	void muteMusic2();
 };
 

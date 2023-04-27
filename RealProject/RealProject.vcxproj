@@ -137,6 +137,7 @@
     <ClCompile Include="Dino.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IDino.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +145,7 @@
     <ClInclude Include="Dino.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IDino.h" />
+    <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
