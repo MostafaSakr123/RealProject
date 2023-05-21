@@ -23,8 +23,10 @@ private:
 	int frame = 0;
 	
 	int frameCounter = 0;
+	
+	
 
-	//public functions
+	//private functions
 
 	void InitTextures();
 	
@@ -44,8 +46,12 @@ public:
 	void setSpritePosition(float x, float y);
 	void moveSprite(float x ,float y);
 	void InitSprite();
+	void InitPlayingDinoSprite();
 	Vector2f getDinoPos();
 	void makeDuckingAnimation();
+
+	const FloatRect getBounds();
+	
 
 
 
