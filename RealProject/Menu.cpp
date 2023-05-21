@@ -164,6 +164,6 @@ void Menu::moveDown(int m)
 }
 Menu::~Menu()
 {
-	delete this->stringArray;
-	delete this->textArray;
+	delete[] this->stringArray;
+	delete[] this->textArray;
 }

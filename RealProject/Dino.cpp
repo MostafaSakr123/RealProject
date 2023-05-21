@@ -1,5 +1,12 @@
 #include "Dino.h"
 
+
+
+const FloatRect Dino::getBounds()
+{
+	return this->sprite.getGlobalBounds();
+}
+
 void Dino::InitTextures()
 {
 	if (!(this->GreenTexture.loadFromFile("Player/sheets/DinoSprites_0.png")))
@@ -43,8 +50,8 @@ void Dino::InitSprite()
 		
 
 			sprite.setTextureRect(IntRect(24 * frame, 0, 24, 24));
-			sprite.setScale(5.f, 5.f);
-			if (frameCounter == 5)
+			sprite.setScale(4.f, 4.f);
+			if (frameCounter == 7)
 			{
 				frame = (frame + 1) % 11;
 				frameCounter = 0;
@@ -52,6 +59,31 @@ void Dino::InitSprite()
 			frameCounter++;
 		
 	
+}
+
+void Dino::InitPlayingDinoSprite()
+{
+	if (Color == "Green")
+		sprite.setTexture(GreenTexture);
+	else if (Color == "Red")
+		sprite.setTexture(RedTexture);
+	else if (Color == "Yellow")
+		sprite.setTexture(YellowTexture);
+	else if (Color == "Blue")
+		sprite.setTexture(BlueTexture);
+
+
+
+
+
+	sprite.setTextureRect(IntRect(24 * frame, 0, 24, 24));
+	sprite.setScale(10.f, 10.f);
+	if (frameCounter == 1)
+	{
+		frame = (frame + 1) % 11;
+		frameCounter = 0;
+	}
+	frameCounter++;
 }
 
 Vector2f Dino::getDinoPos()
@@ -113,3 +145,4 @@ void Dino::moveSprite(float x, float y)
 {
 	sprite.move(x, y);
 }
+
