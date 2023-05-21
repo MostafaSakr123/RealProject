@@ -8,6 +8,11 @@
 #include"Background.h"
 #include "Dino.h"
 #include "Menu.h"
+#include "Heart.h"
+#include "Treasure.h"
+#include"StandingEnemy.h"
+#include "FlyingEnemy.h"
+#include <sstream>
 
 using namespace sf;
 using namespace std;
@@ -29,9 +34,33 @@ private:
 	//Private Functions
 	void InitVariables();
 	void InitWindow();
+	void InitHearts();
+	void updateHearts();
+	void InitTreasures();
+	void updateTreasures();
+	void InitStandingEnemies();
+	void updateStandingEnemies();
+	void InitFlyingEnemies();
+	void updateFlyingEnemies();
+	void updateCollision();
+	void InitFont();
+	void InitText();
+	void updateText();
+	void renderLivesAndScore(RenderTarget* target);
 
 	// Private members
-
+	float spawnHeartTimer;
+	float spawnHeartTimerMax;
+	float spawnTreasureTimer;
+	float spawnTreasureTimerMax;
+	float spawnStandingEnemiesTimer;
+	float spawnStandingEnemiesTimerMax;
+	float spawnFlyingEnemiesTimer;
+	float spawnFlyingEnemiesTimerMax;
+	vector<Heart*> hearts;
+	vector<Treasure*> treasures;
+	vector<StandingEnemy*> standingenemies;
+	vector<FlyingEnemy*> flyingenemies;
 	Background* background = new Background;
 	RenderWindow* window;
 	Event ev;
@@ -59,5 +88,12 @@ private:
 	int diffucilityMode = 0;
 	int startGame=0;
 	bool onground;
+	Texture groundTexture;
+	Sprite groundSprite;
+	int score = 0;
+	int lives =3;
+	Font font;
+	Text text;
+
 };
 

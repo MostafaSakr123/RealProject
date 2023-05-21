@@ -135,17 +135,29 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Dino.cpp" />
+    <ClCompile Include="FlyingEnemy.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Heart.cpp" />
+    <ClCompile Include="Hittable.cpp" />
     <ClCompile Include="IDino.cpp" />
+    <ClCompile Include="IEnemy.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="StandingEnemy.cpp" />
+    <ClCompile Include="Treasure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Dino.h" />
+    <ClInclude Include="FlyingEnemy.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Heart.h" />
+    <ClInclude Include="Hittable.h" />
     <ClInclude Include="IDino.h" />
+    <ClInclude Include="IEnemy.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="StandingEnemy.h" />
+    <ClInclude Include="Treasure.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

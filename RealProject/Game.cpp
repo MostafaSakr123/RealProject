@@ -33,6 +33,174 @@ void Game::InitWindow()
 	this->window->setFramerateLimit(60);
 }
 
+void Game::InitHearts()
+{
+	this->spawnHeartTimerMax = 20.f;
+	this->spawnHeartTimer = this->spawnHeartTimerMax;
+}
+
+void Game::updateHearts()
+{
+	this->spawnHeartTimer += 0.5f;
+	if (this->spawnHeartTimer >= spawnHeartTimerMax)
+	{
+		this->hearts.push_back(new Heart(this->window->getSize().x+100.f, (rand() % (550 - 350 + 1)) + 350.f));
+		this->spawnHeartTimer = 0.f;
+	}
+	for (int i=0; i<this->hearts.size(); ++i)
+	{
+		this->hearts[i]->updateHeart();
+		//Remove  when they reach the very left of the window
+		if (this->hearts[i]->getBounds().left > this->window->getSize().x + 200.f)
+		{
+			this->hearts.erase(this->hearts.begin() + i);
+		}
+	}
+}
+
+void Game::InitTreasures()
+{
+	this->spawnTreasureTimerMax = 15.f;
+	this->spawnTreasureTimer = this->spawnHeartTimerMax;
+}
+
+void Game::updateTreasures()
+{
+	this->spawnTreasureTimer += 0.5f;
+	if (this->spawnTreasureTimer >= spawnTreasureTimerMax)
+	{
+		this->treasures.push_back(new Treasure(this->window->getSize().x + 100.f, (rand() % (550 - 350 + 1) + 350.f),rand()%2));
+		this->spawnTreasureTimer = 0.f;
+	}
+	for (int i = 0; i < this->treasures.size(); ++i)
+	{
+		this->treasures[i]->updateTreasure();
+		//Remove  when they reach the very left of the window
+		if (this->treasures[i]->getBounds().left > this->window->getSize().x + 200.f)
+		{
+			this->treasures.erase(this->treasures.begin() + i);
+		}
+	}
+}
+
+void Game::InitStandingEnemies()
+{
+	this->spawnStandingEnemiesTimerMax = 10.f;
+	this->spawnStandingEnemiesTimer = this->spawnStandingEnemiesTimerMax;
+}
+
+void Game::updateStandingEnemies()
+{
+	this->spawnStandingEnemiesTimer += 0.5f;
+	if (this->spawnStandingEnemiesTimer >= spawnStandingEnemiesTimerMax)
+	{
+		this->standingenemies.push_back(new StandingEnemy(this->window->getSize().x + 100.f,580.f));
+		this->spawnStandingEnemiesTimer = 0.f;
+	}
+	for (int i = 0; i < this->standingenemies.size(); ++i)
+	{
+		this->standingenemies[i]->updateEnemy();
+		//Remove  when they reach the very left of the window
+		if (this->standingenemies[i]->getBounds().left > this->window->getSize().x + 200.f)
+		{
+			this->standingenemies.erase(this->standingenemies.begin() + i);
+		}
+	}
+}
+
+void Game::InitFlyingEnemies()
+{
+	this->spawnFlyingEnemiesTimerMax = 10.f;
+	this->spawnFlyingEnemiesTimer = this->spawnFlyingEnemiesTimerMax;
+}
+
+void Game::updateFlyingEnemies()
+{
+	this->spawnFlyingEnemiesTimer += 0.5f;
+	if (this->spawnFlyingEnemiesTimer >= spawnFlyingEnemiesTimerMax)
+	{
+		this->flyingenemies.push_back(new FlyingEnemy(this->window->getSize().x + 100.f, (rand() % (550 - 350 + 1)) + 350.f));
+		this->spawnFlyingEnemiesTimer = 0.f;
+	}
+	for (int i = 0; i < this->flyingenemies.size(); ++i)
+	{
+		this->flyingenemies[i]->updateEnemy();
+		//Remove  when they reach the very left of the window
+		if (this->flyingenemies[i]->getBounds().left > this->window->getSize().x + 200.f)
+		{
+			this->flyingenemies.erase(this->flyingenemies.begin() + i);
+		}
+	}
+}
+
+
+
+void Game::updateCollision()
+{
+	for (size_t i = 0; i < this->hearts.size(); i++)
+	{
+		if (this->playingDino.getBounds().intersects(this->hearts[i]->getBounds()))
+		{
+			this->hearts.erase(this->hearts.begin()+i);
+			this->lives++;
+		}
+	}
+	for (size_t i = 0; i < this->treasures.size(); i++)
+	{
+		if (this->playingDino.getBounds().intersects(this->treasures[i]->getBounds()))
+		{
+			if (treasures[i]->getType() == 0)
+				this->score++;
+			if (treasures[i]->getType() == 1)
+				this->score += 2;
+			this->treasures.erase(this->treasures.begin() + i);
+			
+
+		}
+	}
+	for (size_t i = 0; i < this->standingenemies.size(); i++)
+	{
+		if (this->playingDino.getBounds().intersects(this->standingenemies[i]->getBounds()))
+		{
+			this->standingenemies.erase(this->standingenemies.begin() + i);
+			this->lives--;
+		}
+	}
+	for (size_t i = 0; i < this->flyingenemies.size(); i++)
+	{
+		if (this->playingDino.getBounds().intersects(this->flyingenemies[i]->getBounds()))
+		{
+			this->flyingenemies.erase(this->flyingenemies.begin() + i);
+			this->lives--;
+		}
+	}
+}
+
+void Game::InitFont()
+{
+	if (!this->font.loadFromFile("Fonts/CoffeCake.ttf")) { cout << "Font Error"; }
+}
+
+void Game::InitText()
+{
+	this->text.setFont(this->font);
+	this->text.setFillColor(Color::White);
+	this->text.setCharacterSize(32);
+	
+}
+
+void Game::updateText()
+{
+	stringstream ss;
+	ss << "Score: " << this->score << "\n" << "Lives: "<<lives;
+	this->text.setString(ss.str());
+}
+
+void Game::renderLivesAndScore(RenderTarget* target)
+{
+	target->draw(this->text);
+}
+
 //Constructors and Destructors
 
 Game::Game() :
@@ -43,18 +211,43 @@ Game::Game() :
 	howToPlay(*window, 1200.f, 800.f, howYoPlayText, 4, "How To Play"),
 	gamePlay(*window,1200.f,800.f,0,0,"")
 {
+
 	this->InitVariables();
 	this->InitWindow();
 	this->background->Initboxes();
 	this->background->InitFonts();
 	this->background->InitText();
 	this->background->InitMusic();
+	this->InitFont();
+	this->InitText();
+	this->InitHearts();
+	this->InitTreasures();
+	this->InitStandingEnemies();
+	this->InitFlyingEnemies();
+	
 }
 
 Game::~Game()
 {
 	delete this->window;
 	delete this->background;
+	for (auto* heart : this->hearts)
+	{
+		delete heart;
+	}
+	for (auto* treasure : this->treasures)
+	{
+		delete treasure;
+	}
+	for (auto* standingenemy : this->standingenemies)
+	{
+		delete standingenemy;
+	}
+	for (auto* flyingenemy : this->flyingenemies)
+	{
+		delete flyingenemy;
+	}
+	
 	
 }
 
@@ -192,6 +385,12 @@ void Game::pollEvents()
 void Game::update()
 {
 	this->pollEvents();
+	this->updateHearts();
+	this->updateTreasures();
+	this->updateStandingEnemies();
+	this->updateFlyingEnemies();
+	this->updateCollision(); 
+	this->updateText();
 }
 
 
@@ -206,10 +405,28 @@ void Game::render()
 	this->background->renderDinos(*window);
 	if (startGame == 1)
 	{
+		
+		playingDino.InitPlayingDinoSprite();
+		playingDino.setSpritePosition(50.f, 400.f);
 		gamePlay.setBackground(*window, "background/static/3.png");
-		playingDino.InitSprite();
-		playingDino.setSpritePosition(50.f, 550.f);
 		playingDino.drawSprite(*window);
+		this->renderLivesAndScore(this->window);
+		for (auto* heart : this->hearts)
+		{
+			heart->renderHeart(this->window);
+		}
+		for (auto* treasure : this->treasures)
+		{
+			treasure->renderTreasure(this->window);
+		}
+		for (auto* standingenemy : this->standingenemies)
+		{
+			standingenemy->renderEnemy(this->window);
+		}
+		for (auto* flyingenemy : this->flyingenemies)
+		{
+			flyingenemy->renderEnemy(this->window);
+		}
 		
 	}
 	if (mainSelected == 1)
