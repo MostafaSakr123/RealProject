@@ -3,28 +3,28 @@
 void Game::InitVariables()
 {
 	this->window = nullptr;
-	
-	
-		if (!(this->JumpBuffer.loadFromFile("Music/jump.wav")))
-		{
-			cout << "Failed to load jumping sound effect" << "\n";
-		}
-		if (!(this->DuckingBuffer.loadFromFile("Music/ducking.wav")))
-		{
-			cout << "Failed to load ducking sound effect" << "\n";
-		}
-		if (!(this->DoubleJumpBuffer.loadFromFile("Music/double_jump.wav")))
-		{
-			cout << "Failed to load double jump sound effect" << "\n";
-		}
-
-		JumpSound.setBuffer(JumpBuffer);
-		DoubleJumpSound.setBuffer(DoubleJumpBuffer);
-		DuckingSound.setBuffer(DuckingBuffer);
 
 
+	if (!(this->JumpBuffer.loadFromFile("Music/jump.wav")))
+	{
+		cout << "Failed to load jumping sound effect" << "\n";
+	}
+	if (!(this->DuckingBuffer.loadFromFile("Music/ducking.wav")))
+	{
+		cout << "Failed to load ducking sound effect" << "\n";
+	}
+	if (!(this->DoubleJumpBuffer.loadFromFile("Music/double_jump.wav")))
+	{
+		cout << "Failed to load double jump sound effect" << "\n";
+	}
 
-	
+	JumpSound.setBuffer(JumpBuffer);
+	DoubleJumpSound.setBuffer(DoubleJumpBuffer);
+	DuckingSound.setBuffer(DuckingBuffer);
+
+
+
+
 }
 
 void Game::InitWindow()
@@ -44,10 +44,10 @@ void Game::updateHearts()
 	this->spawnHeartTimer += 0.5f;
 	if (this->spawnHeartTimer >= spawnHeartTimerMax)
 	{
-		this->hearts.push_back(new Heart(this->window->getSize().x+100.f, (rand() % (550 - 350 + 1)) + 350.f));
+		this->hearts.push_back(new Heart(this->window->getSize().x + 100.f, (rand() % (550 - 350 + 1)) + 350.f));
 		this->spawnHeartTimer = 0.f;
 	}
-	for (int i=0; i<this->hearts.size(); ++i)
+	for (int i = 0; i < this->hearts.size(); ++i)
 	{
 		this->hearts[i]->updateHeart();
 		//Remove  when they reach the very left of the window
@@ -69,7 +69,7 @@ void Game::updateTreasures()
 	this->spawnTreasureTimer += 0.5f;
 	if (this->spawnTreasureTimer >= spawnTreasureTimerMax)
 	{
-		this->treasures.push_back(new Treasure(this->window->getSize().x + 100.f, (rand() % (550 - 350 + 1) + 350.f),rand()%2));
+		this->treasures.push_back(new Treasure(this->window->getSize().x + 100.f, (rand() % (550 - 350 + 1) + 350.f), rand() % 2));
 		this->spawnTreasureTimer = 0.f;
 	}
 	for (int i = 0; i < this->treasures.size(); ++i)
@@ -94,7 +94,7 @@ void Game::updateStandingEnemies()
 	this->spawnStandingEnemiesTimer += 0.5f;
 	if (this->spawnStandingEnemiesTimer >= spawnStandingEnemiesTimerMax)
 	{
-		this->standingenemies.push_back(new StandingEnemy(this->window->getSize().x + 100.f,580.f));
+		this->standingenemies.push_back(new StandingEnemy(this->window->getSize().x + 100.f, 580.f));
 		this->spawnStandingEnemiesTimer = 0.f;
 	}
 	for (int i = 0; i < this->standingenemies.size(); ++i)
@@ -141,7 +141,7 @@ void Game::updateCollision()
 	{
 		if (this->playingDino.getBounds().intersects(this->hearts[i]->getBounds()))
 		{
-			this->hearts.erase(this->hearts.begin()+i);
+			this->hearts.erase(this->hearts.begin() + i);
 			this->lives++;
 		}
 	}
@@ -154,7 +154,7 @@ void Game::updateCollision()
 			if (treasures[i]->getType() == 1)
 				this->score += 2;
 			this->treasures.erase(this->treasures.begin() + i);
-			
+
 
 		}
 	}
@@ -176,6 +176,7 @@ void Game::updateCollision()
 	}
 }
 
+
 void Game::InitFont()
 {
 	if (!this->font.loadFromFile("Fonts/CoffeCake.ttf")) { cout << "Font Error"; }
@@ -186,19 +187,55 @@ void Game::InitText()
 	this->text.setFont(this->font);
 	this->text.setFillColor(Color::White);
 	this->text.setCharacterSize(32);
-	
+
 }
 
 void Game::updateText()
 {
 	stringstream ss;
-	ss << "Score: " << this->score << "\n" << "Lives: "<<lives;
+	ss << "Score: " << this->score << "\n" << "Lives: " << lives;
 	this->text.setString(ss.str());
 }
+
 
 void Game::renderLivesAndScore(RenderTarget* target)
 {
 	target->draw(this->text);
+}
+
+void Game::profileMaker(string profileName)
+{
+	oprofileCounter.open("profileNumbers.txt", ios::out | ios::app);
+	oprofileCounter << 1;
+	oprofileCounter.close();
+	iprofileCounter.open("profileNumbers.txt");
+	getline(iprofileCounter, line);
+	outputArr[line.length()].open(profileName + ".txt");
+	outputArr[line.length()] << line.length() << endl;
+	outputArr[line.length()].close();
+}
+
+string Game::profileScore(string profileN, int sc)
+{
+	inputArr[line.length()].open(profileN + ".txt");
+	while (getline(inputArr[line.length()], newLine))
+	{
+		lines.push_back(newLine);
+	}
+	inputArr[line.length()].close();
+	outputArr[line.length()].open(profileN + ".txt");
+	for (int i = 0; i < 2; i++)
+	{
+		if (i != 1)
+		{
+			outputArr[line.length()] << lines[i];
+		}
+		else if (sc > stoi(lines[1]))
+		{
+			outputArr[line.length()] << sc;
+		}
+	}
+	return to_string(sc);
 }
 
 //Constructors and Destructors
@@ -209,9 +246,12 @@ Game::Game() :
 	about(*window, 1200.f, 800.f, aboutText, 4, "About"),
 	credits(*window, 1200.f, 800.f, creditsText, 5, "Credits"),
 	howToPlay(*window, 1200.f, 800.f, howYoPlayText, 4, "How To Play"),
-	gamePlay(*window,1200.f,800.f,0,0,"")
+	gamePlay(*window, 1200.f, 800.f, 0, 0, ""),
+	gameOver(*window, 1200.f, 800.f, gameOverText, 4, "GameOver"),
+	newOrOld(*window, 1200.f, 800.f, newOrOldText, 2, "Select one Option"),
+	createProfile(*window, 1200.f, 800.f,createProfileText, 2, ""),
+	oldProfile(*window,1200.f,800.f,oldProfileText,2,"")
 {
-
 	this->InitVariables();
 	this->InitWindow();
 	this->background->Initboxes();
@@ -224,7 +264,7 @@ Game::Game() :
 	this->InitTreasures();
 	this->InitStandingEnemies();
 	this->InitFlyingEnemies();
-	
+
 }
 
 Game::~Game()
@@ -247,8 +287,8 @@ Game::~Game()
 	{
 		delete flyingenemy;
 	}
-	
-	
+	delete[] inputArr;
+	delete[] outputArr;
 }
 
 // Accessors
@@ -274,7 +314,7 @@ void Game::pollEvents()
 			break;
 
 		case   Event::KeyPressed:
-			if (this->ev.key.code == Keyboard::Enter && mainSelected == 0 && selectedText == 0 && selectedText2==0)
+			if (this->ev.key.code == Keyboard::Enter && mainSelected == 0 && selectedText == 0 && selectedText2 == 0)
 			{
 				mainSelected = 1;
 				selectedText = 0;
@@ -291,7 +331,7 @@ void Game::pollEvents()
 			{
 				selectedText = 1;
 				mainSelected = 0;
-				
+
 
 				break;
 			}
@@ -306,7 +346,7 @@ void Game::pollEvents()
 			{
 				selectedText = 3;
 				mainSelected = 0;
-				
+
 				break;
 			}
 
@@ -315,7 +355,7 @@ void Game::pollEvents()
 				this->window->close();
 				break;
 			}
-			
+
 			if (this->ev.key.code == Keyboard::BackSpace && (selectedText == 1 || selectedText == 2 || selectedText == 3))
 			{
 				selectedText = 0;
@@ -327,7 +367,7 @@ void Game::pollEvents()
 				selectedText2 = 1;
 				diffucilityMode = 1;
 				selectedText = 0;
-
+				newOrOldInt = 1;
 				break;
 			}
 			if (selectedText == 1 && diff_sel_menu.getMove(2) == 1 && this->ev.key.code == Keyboard::Enter)
@@ -335,8 +375,28 @@ void Game::pollEvents()
 				selectedText2 = 2;
 				diffucilityMode = 2;
 				selectedText = 0;
-
+				newOrOldInt = 1;
 				break;
+			}
+			if (newOrOldInt == 1 &&  newOrOld.getMove(2) == 0 && this->ev.key.code == Keyboard::Enter)
+			{
+				createProfilesInt = 1;				
+				profilesMenuInt = 0;
+				enter = 1;
+				break;
+			}
+			if (newOrOldInt == 1 && newOrOld.getMove(2) == 1 && this->ev.key.code == Keyboard::Enter)
+			{
+				profilesMenuInt = 1;
+				createProfilesInt = 0;
+				enter = 1;
+				break;
+			}
+			if (enter == 1 && this->ev.key.code == Keyboard::Enter)
+			{
+				startGame = 1;
+				createProfilesInt = 0;
+				profilesMenuInt = 0;
 			}
 			if ((this->ev.key.code == Keyboard::BackSpace) && (selectedText2 == 1 || selectedText2 == 2))
 			{
@@ -344,16 +404,9 @@ void Game::pollEvents()
 				selectedText2 = 0;
 				break;
 			}
-			if ((this->ev.key.code == Keyboard::Enter) && (selectedText2 == 1 || selectedText2 == 2))
+			if (startGame == 1 && this->ev.key.code == Keyboard::W)
 			{
-				startGame = 1;
-				selectedText2 = 0;
-				break;
-				
-			}
-			if (startGame == 1 && this->ev.key.code == Keyboard::W )
-			{
-				playingDino.moveSprite(0,-10.f);
+				playingDino.moveSprite(0, -10.f);
 
 				JumpSound.play();
 				break;
@@ -364,18 +417,17 @@ void Game::pollEvents()
 				DuckingSound.play();
 				break;
 			}
-			
-
-
 
 			if (mainSelected == 1 && this->ev.key.code == Keyboard::Up)
 				this->main_menu.moveUp(4);
 			if (mainSelected == 1 && this->ev.key.code == Keyboard::Down)
 				this->main_menu.moveDown(4);
-
-
-			if (selectedText == 1 && this->ev.key.code == Keyboard::Up)
-				this->diff_sel_menu.moveUp(2);
+			if (mainSelected == 1 && this->ev.key.code == Keyboard::Up)
+				this->newOrOld.moveUp(2);
+			if (newOrOldInt == 1 && this->ev.key.code == Keyboard::Down)
+				this->newOrOld.moveDown(2);
+			if (newOrOldInt == 1 && this->ev.key.code == Keyboard::Up)
+				this->newOrOld.moveUp(2);
 			if (selectedText == 1 && this->ev.key.code == Keyboard::Down)
 				this->diff_sel_menu.moveDown(2);
 		}
@@ -389,7 +441,7 @@ void Game::update()
 	this->updateTreasures();
 	this->updateStandingEnemies();
 	this->updateFlyingEnemies();
-	this->updateCollision(); 
+	this->updateCollision();
 	this->updateText();
 }
 
@@ -403,9 +455,9 @@ void Game::render()
 	this->background->renderBoxes(*window);
 	this->background->renderText(*window);
 	this->background->renderDinos(*window);
-	if (startGame == 1)
+	if (startGame==1)
 	{
-		
+
 		playingDino.InitPlayingDinoSprite();
 		playingDino.setSpritePosition(50.f, 400.f);
 		gamePlay.setBackground(*window, "background/static/3.png");
@@ -427,7 +479,7 @@ void Game::render()
 		{
 			flyingenemy->renderEnemy(this->window);
 		}
-		
+
 	}
 	if (mainSelected == 1)
 	{
@@ -436,10 +488,10 @@ void Game::render()
 		this->main_menu.displayTime(*window);
 		this->main_menu.setOptions(*window, 4);
 		this->main_menu.renderKeyboardSpr(*window);
-		
-		
+
+
 	}
-	if (selectedText == 1 )
+	if (selectedText == 1)
 	{
 		this->diff_sel_menu.setBackground(*window, "101.png");
 		this->diff_sel_menu.displayMenuName(*window);
@@ -447,8 +499,8 @@ void Game::render()
 		this->diff_sel_menu.setOptions(*window, 2);
 		this->diff_sel_menu.renderKeyboardSpr(*window);
 		this->diff_sel_menu.renderBackSpaceSpr(*window);
-		
-		
+
+
 	}
 	if (selectedText == 2)
 	{
@@ -477,6 +529,74 @@ void Game::render()
 		this->howToPlay.renderKeyboardSpr(*window);
 		this->howToPlay.renderBackSpaceSpr(*window);
 
+	}
+	if (newOrOldInt == 1)
+	{
+		this->newOrOld.setBackground(*window, "3.png");
+		this->newOrOld.displayMenuName(*window);
+		this->newOrOld.displayTime(*window);
+		this->newOrOld.setOptions(*window, 2);
+		this->newOrOld.renderKeyboardSpr(*window);
+		this->newOrOld.renderBackSpaceSpr(*window);
+	}
+	if (createProfilesInt == 1 && profilesMenuInt==0)
+	{
+		this->createProfile.setBackground(*window, "3.png");
+		this->createProfile.displayMenuName(*window);
+		this->createProfile.displayTime(*window);
+		this->createProfile.setOptions(*window, 2);
+		this->createProfile.renderKeyboardSpr(*window);
+		this->createProfile.renderBackSpaceSpr(*window);
+		if (ev.type == sf::Event::TextEntered)
+		{
+			profileInput += ev.text.unicode;
+			profileText.setString(profileInput);
+			profileText.setFont(font);
+			profileText.setCharacterSize(40);
+			profileText.setFillColor(Color::White);
+			profileText.setPosition(Vector2f(1200 / 2 - 100, 800 / 16 * ((8 - 2 / 2) + 1)));
+		}
+		profileMaker(profileInput);
+		window->draw(profileText);
+	}
+	if (profilesMenuInt == 1 && createProfilesInt == 0)
+	{
+		this->oldProfile.setBackground(*window, "3.png");
+		this->oldProfile.displayMenuName(*window);
+		this->oldProfile.displayTime(*window);
+		this->oldProfile.setOptions(*window, 2);
+		this->oldProfile.renderKeyboardSpr(*window);
+		this->oldProfile.renderBackSpaceSpr(*window);
+		if (ev.type == sf::Event::TextEntered)
+		{
+			profileInput += ev.text.unicode;
+			profileText.setString(profileInput);
+			profileText.setFont(font);
+			profileText.setCharacterSize(40);
+			profileText.setFillColor(Color::White);
+			profileText.setPosition(Vector2f(1200 / 2 - 100, 800 / 16 * ((8 - 2 / 2) + 1)));
+		}
+		window->draw(profileText);
+	}
+	if (this->lives == 0)
+	{
+		this->gameOver.setBackground(*window, "3.png");
+		this->gameOver.displayMenuName(*window);
+		this->gameOver.setOptions(*window, 4);
+		scoreText.setFont(font);
+		scoreText.setCharacterSize(40);
+		scoreText.setString(to_string(score));
+		scoreText.setFillColor(Color::White);
+		scoreText.setPosition(Vector2f(1200 / 2 - 100, 800 / 16 * ((8 - 4 / 2) + 1)));
+		scoreText.setOutlineColor(Color::Red);
+		bestScoreText.setFont(font);
+		bestScoreText.setCharacterSize(40);
+		bestScoreText.setString(profileScore(profileInput,score));
+		bestScoreText.setFillColor(Color::White);
+		bestScoreText.setPosition(Vector2f(1200 / 2 - 100, 800 / 16 * ((8 - 4 / 2) + 1)));
+		bestScoreText.setOutlineColor(Color::Red);
+		window->draw(bestScoreText);
+		window->draw(scoreText);
 	}
 
 

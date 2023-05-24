@@ -13,6 +13,8 @@
 #include"StandingEnemy.h"
 #include "FlyingEnemy.h"
 #include <sstream>
+#include <string>
+#include<fstream>
 
 using namespace sf;
 using namespace std;
@@ -27,7 +29,7 @@ public:
 	void update();
 	void render();
 	const bool running() const;
-	
+
 
 
 private:
@@ -47,6 +49,8 @@ private:
 	void InitText();
 	void updateText();
 	void renderLivesAndScore(RenderTarget* target);
+	void profileMaker(string prfileName);
+	string profileScore(string profileN, int sc);
 
 	// Private members
 	float spawnHeartTimer;
@@ -68,13 +72,21 @@ private:
 	string diffMenuButtons[2] = { "Easy","Hard" };
 	string creditsText[5] = { "This game is made by","Mohamed Hany","Mustafa Sakr", "Nour Osama", "All Rights Reserved@" };
 	string aboutText[4] = { "This game is about ","a running dino","jump over enemies and ","avoid hitting them" };
-	string howYoPlayText[4] = { "Click 'W' to Jump,","double 'W' to double jump," ,"s to duck" ,"Click 'Enter' to play"};
+	string howYoPlayText[4] = { "Click 'W' to Jump,","double 'W' to double jump," ,"s to duck" ,"Click 'Enter' to play" };
+	string gameOverText[4] = { "Your score is","","And your best score is","" };
+	string newOrOldText[2] = { "Create New Profile","Choose old Profile" };
+	string createProfileText[2] = { "Enter The New Profile Name","" };
+	string oldProfileText[2] = { "Enter Your Profile Name ","" };
 	Menu main_menu;
 	Menu diff_sel_menu;
 	Menu about;
 	Menu credits;
 	Menu howToPlay;
 	Menu gamePlay;
+	Menu gameOver;
+	Menu newOrOld;
+	Menu createProfile;
+	Menu oldProfile;
 	Dino playingDino;
 	SoundBuffer JumpBuffer;
 	SoundBuffer DuckingBuffer;
@@ -86,14 +98,32 @@ private:
 	int selectedText = 0;
 	int selectedText2 = 0;
 	int diffucilityMode = 0;
-	int startGame=0;
+	int newOrOldInt = 0;
+	int profilesMenuInt = 0;
+	int createProfilesInt = 0;
+	int startGame = 0;
 	bool onground;
 	Texture groundTexture;
 	Sprite groundSprite;
 	int score = 0;
-	int lives =3;
+	int lives = 3;
+	int over = 0;
 	Font font;
 	Text text;
-
+	Text scoreText;
+	Text bestScoreText;
+	string profileMakerInput;
+	string oldProfileInput;
+	string profileInput;
+	Text profileText;
+	int profileTyped;
+	ifstream* inputArr = new ifstream[100];
+	ofstream* outputArr = new ofstream[100];
+	ofstream oprofileCounter;
+	ifstream iprofileCounter;
+	string line;
+	string newLine;
+	vector<string> lines;
+	int enter;
 };
 

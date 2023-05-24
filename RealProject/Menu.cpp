@@ -1,5 +1,5 @@
 #include "Menu.h"
-
+//constructor
 Menu::Menu(RenderTarget& window, float width, float height, string ar[], int m, string mN)
 {
 	if (!font.loadFromFile("Fonts/CoffeCake.ttf")) { cout << "Font Error"; }
@@ -24,19 +24,18 @@ Menu::Menu(RenderTarget& window, float width, float height, string ar[], int m, 
 	menuName.setCharacterSize(70);
 	setKeyboardIcons();
 }
-
+//displaying the menu name
 void Menu::displayMenuName(RenderTarget& window)
 {
 	window.draw(menuName);
 }
-
-
+//displaying the options in the menu
 void Menu::setOptions(RenderTarget& window, int m)
 {
 	for (int i = 0; i < m; i++)
 		window.draw(textArray[i]);
 }
-
+//rendering and displaying the background
 void Menu::setBackground(RenderTarget& window, string fileName)
 {
 	Background.setSize(Vector2f(window.getSize().x, window.getSize().y));
@@ -45,28 +44,8 @@ void Menu::setBackground(RenderTarget& window, string fileName)
 	window.draw(Background);
 }
 
-//bool Menu::updateMousePos(RenderWindow& window)
-//{
-//	mousePosWindow = Mouse::getPosition(window);
-//	mousePosView = window.mapPixelToCoords(mousePosWindow);
-//	for (int i = 0; i < 4; i++)
-//	{
-//		if (textArray[i].getGlobalBounds().contains(mousePosView))
-//		{
-//			textArray[i].setFillColor(Color::Blue);
-//			return true;
-//		}
-//		else if ((!textArray[i].getGlobalBounds().contains(mousePosView)) && move != i)
-//		{
-//			textArray[i].setFillColor(Color::White);
-//			return false;
-//		}
-//
-//	}
-//
-//}
 
-
+//loading keaboard icons
 void Menu::setKeyboardIcons()
 {
 	liftClick.loadFromFile("controllers_icons/mouse.png");
@@ -100,7 +79,7 @@ void Menu::setKeyboardIcons()
 	backSpaceSpr.setScale(3 / 4.f, 3 / 4.f);
 	backSpaceSpr.setPosition(900.f, 710.f);
 }
-
+//displaying the keyboard sprites
 void Menu::renderKeyboardSpr(RenderTarget& window)
 {
 	window.draw(liftClickSpr);
@@ -109,13 +88,12 @@ void Menu::renderKeyboardSpr(RenderTarget& window)
 	window.draw(downSpr);
 	window.draw(upSpr);
 }
-
+//displaying the spacebar sprite
 void Menu::renderBackSpaceSpr(RenderTarget& window)
 {
 	window.draw(backSpaceSpr);
 }
-
-
+//displaying the time on the screan
 void Menu::displayTime(RenderTarget& window)
 {
 	currentTime.setFillColor(Color::White);
@@ -126,6 +104,7 @@ void Menu::displayTime(RenderTarget& window)
 	currentTime.setString(string(date_time));
 	window.draw(currentTime);
 }
+//returning the value of the selected button
 int Menu::getMove(int m)
 {
 	for (int i = 0; i < m; i++)
@@ -135,7 +114,7 @@ int Menu::getMove(int m)
 	}
 	return selected;
 }
-
+//moving mouse up
 void Menu::moveUp(int m)
 {
 	if (move - 1 >= 0)
@@ -149,6 +128,7 @@ void Menu::moveUp(int m)
 		textArray[move].setFillColor(Color::Blue);
 	}
 }
+//moving mouse down
 void Menu::moveDown(int m)
 {
 	if (move + 1 <= m)
@@ -162,6 +142,7 @@ void Menu::moveDown(int m)
 		textArray[move].setFillColor(Color::Blue);
 	}
 }
+//destructor
 Menu::~Menu()
 {
 	delete[] this->stringArray;
